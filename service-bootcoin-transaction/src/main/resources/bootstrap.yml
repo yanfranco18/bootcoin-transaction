@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: bootcoin-service-transaction
+  cloud:
+    config:
+      uri: http://localhost:8090
+      username: yloayza
+      password: yloayza2022
+  data:
+    mongodb:
+      uri: mongodb+srv://admin1:admin1@dbproyect.sklmn.mongodb.net/DbBootcoinTransaction?retryWrites=true&w=majority
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 6
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 4
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+    instances:
+      bootcointransaction:
+        base-config: default
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 2s
+    instances:
+      bootcointransaction:
+        base-config: default
+
+#KAFKA
+custom:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic-name-transaction: topic-bootTrans
+    topic-name-bootcoin: topic-bootcoin
+    group-id: group-id
+
+#WEBCLIENT-BOOTCOIN
+application:
+  external:
+    comments:
+      url: http://localhost:8100
+      path: /bootcoins
